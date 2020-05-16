@@ -16,7 +16,7 @@ namespace cw10.Controllers
         private IDbService service;
         public StudentController(IDbService dbService)
         {
-            service = dbService;
+            this.service = dbService;
         }
         [HttpGet]
         public IActionResult GetStudents()
@@ -26,18 +26,19 @@ namespace cw10.Controllers
         }
         [HttpPost]
         [Route("modify")]
-        public IActionResult Modify([FromBody] Student student)
+        public IActionResult Modify(Student student)
         {
-            if (service.modifyStudent(student)) return Ok();
-            else return BadRequest();
+            var result = service.modifyStudent(student);
+            return Ok(result);
 
         }
         [HttpDelete]
-        [Route("delete/{index}")]
-        public IActionResult Delete([FromRoute] string index)
+        [Route("delete")]
+        public IActionResult Delete(Student student)
         {
-            if (service.removeStudent(index)) return Ok();
-            else return BadRequest();
+            var result = service.removeStudent(student);
+            if (result == null) return BadRequest("Nie ma takiego studenta");
+            return Ok("Student usuniety");
         }
     }
 

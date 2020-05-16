@@ -10,11 +10,43 @@ namespace cw10.Service
 {
     public class SqlServerDbService : IDbService
     {
-        private ModelContext context;
+        private readonly ModelContext context;
 
-        public SqlServerDbService([FromServices] DbContext dbContext)
+        public SqlServerDbService(ModelContext dbContext)
         {
-            this.context = (ModelContext) dbContext;
+            this.context =  dbContext;
+        }
+        public string getStudents()
+        {
+            String tmp = "";
+            var students = context.Student.ToList();
+            foreach (var student in students) tmp += student.IndexNumber + " " + student.FirstName + " " + student.LastName + "\n";
+            return tmp;
+        }
+
+        public Student modifyStudent(Student student)
+        {
+            try
+            {
+                context.Attach(student);
+                context.Entry(student).State = EntityState.Modified;
+                context.SaveChanges();
+            }
+            catch (Exception){
+                return null;
+            }
+            return student;
+        }
+
+        public Student removeStudent(Student student)
+        {
+            var st = context.Student.FirstOrDefault(s => s.IndexNumber == student.IndexNumber);
+
+            if (st == null) return null;
+            context.Attach(st);
+            context.Remove(st);
+            context.SaveChanges();
+            return st;
         }
 
         public Enrollment enrollStudent(Student student, string nameOfStudies)
@@ -81,47 +113,6 @@ namespace cw10.Service
             catch (Exception)
             { 
                 return null;
-            }
-        }
-
-        public string getStudents()
-        {
-            String tmp = "";
-            var students = context.Student.ToList();
-            foreach (var student in students) tmp += student.IndexNumber+" "+student.FirstName+" "+student.LastName+"\n";
-            return tmp;
-        }
-
-        public bool modifyStudent(Student student)
-        {
-            try
-            {
-                var tmp = context.Student.Single(s => s.IndexNumber.Equals(student.IndexNumber));
-                if (tmp.FirstName != null) student.FirstName = tmp.FirstName;
-                if (tmp.BirthDate != null) student.BirthDate = tmp.BirthDate;
-                if (tmp.LastName != null) student.LastName = tmp.LastName;
-                if (tmp.IdEnrollment != 0) student.IdEnrollment = tmp.IdEnrollment;
-                context.SaveChanges();
-                return true;
-            }
-            catch (Exception)
-            {
-                return false;
-            }
-        }
-
-        public bool removeStudent(string index)
-        {
-            try
-            {
-                var student = context.Student.Single(s => s.IndexNumber.Equals(index));
-                context.Student.Remove(student);
-                context.SaveChanges();
-                return true;
-            }
-            catch (Exception)
-            {
-                return false;
             }
         }
     }

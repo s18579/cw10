@@ -13,9 +13,8 @@ namespace cw10.Model
         public DateTime StartDate { get; set; }
         public virtual Study Nav { get; set; }
         public virtual ICollection<Student> StudentList { get; set; }
-        public Enrollment()
-        {
-            StudentList = new HashSet<Student>();
+        public Enrollment(){
+            this.StudentList = new HashSet<Student>();
         }
     }
 }

@@ -8,14 +8,12 @@ namespace cw10.Service
 {
     public interface IDbService
     {
+        public string getStudents();
+        public Student modifyStudent(Student student);
+        public Student removeStudent(Student student);
         public Enrollment enrollStudent(Student studentToEnroll, string studiesName);
-
         public Enrollment promote(int id, int semester);
 
-        public string getStudents();
-
-        public bool modifyStudent(Student student);
-
-        public bool removeStudent(string index);
+       
     }
 }

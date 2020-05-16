@@ -15,31 +15,6 @@ namespace cw10.Controllers
     public class EnrollController : ControllerBase
     {
         [HttpPost]
-        [Route("enroll")]
-        public IActionResult EnrollStudent([FromBody]EnrollStudentDTO req, [FromServices]IDbService dbService)
-        {
-            Student studentToEnroll = new Student
-            {
-                IndexNumber = req.IndexNumber,
-                LastName = req.LastName,
-                FirstName = req.FirstName,
-                BirthDate = req.BirthDate
-            };
-
-            Enrollment tmp = dbService.enrollStudent(studentToEnroll, req.StudyName);
-            if (tmp == null) return BadRequest();
-
-            EnrollStudentDTO2 response = new EnrollStudentDTO2
-            {
-                Semester = tmp.Semester,
-                IdStudy = tmp.IdStudy,
-                StartDate = tmp.StartDate,
-                IdEnrollment = tmp.IdEnrollment
-            };
-            return Ok(response);
-        }
-
-        [HttpPost]
         [Route("promotions")]
         public IActionResult Promote([FromBody] PromoteDTO req, [FromServices] IDbService dbService)
         {
@@ -57,7 +32,27 @@ namespace cw10.Controllers
                 return Ok(response);
             }
         }
-
-
+        [HttpPost]
+        [Route("enroll")]
+        public IActionResult EnrollStudent([FromBody]EnrollStudentDTO req, [FromServices]IDbService dbService)
+        {
+            Student studentToEnroll = new Student
+            {
+                IndexNumber = req.IndexNumber,
+                LastName = req.LastName,
+                FirstName = req.FirstName,
+                BirthDate = req.BirthDate
+            };
+            Enrollment tmp = dbService.enrollStudent(studentToEnroll, req.StudyName);
+            if (tmp == null) return BadRequest();
+            EnrollStudentDTO2 response = new EnrollStudentDTO2
+            {
+                Semester = tmp.Semester,
+                IdStudy = tmp.IdStudy,
+                StartDate = tmp.StartDate,
+                IdEnrollment = tmp.IdEnrollment
+            };
+            return Ok(response);
+        }
     }
 }

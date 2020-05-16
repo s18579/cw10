@@ -11,8 +11,7 @@ namespace cw10.Model
         public int IdStudy { get; set; }
         public string Name { get; set; }
         public virtual ICollection<Enrollment> EnrollmentList { get; set; }
-        public Study()
-        {
+        public Study(){
             EnrollmentList = new HashSet<Enrollment>();
         }
     }
