@@ -1,4 +1,6 @@
-﻿using cw10.Model;
+﻿using cw10.DTO;
+using cw10.Model;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,9 +13,7 @@ namespace cw10.Service
         public string getStudents();
         public Student modifyStudent(Student student);
         public Student removeStudent(Student student);
-        public Enrollment enrollStudent(Student studentToEnroll, string studiesName);
-        public Enrollment promote(int id, int semester);
-
-       
+        public IActionResult enrollStudent(EnrollStudentDTO req);
+        public IActionResult promote(PromoteDTO req);
     }
 }

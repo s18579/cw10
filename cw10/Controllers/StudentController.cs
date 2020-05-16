@@ -14,9 +14,9 @@ namespace cw10.Controllers
     public class StudentController : ControllerBase
     {
         private IDbService service;
-        public StudentController(IDbService dbService)
+        public StudentController(IDbService service)
         {
-            this.service = dbService;
+            this.service = service;
         }
         [HttpGet]
         public IActionResult GetStudents()

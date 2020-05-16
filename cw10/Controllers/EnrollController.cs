@@ -14,45 +14,23 @@ namespace cw10.Controllers
     [ApiController]
     public class EnrollController : ControllerBase
     {
-        [HttpPost]
-        [Route("promotions")]
-        public IActionResult Promote([FromBody] PromoteDTO req, [FromServices] IDbService dbService)
+        private readonly IDbService service;
+
+        public EnrollController(IDbService service)
         {
-            var enroll = dbService.promote(req.StudiesId, req.Semester);
-            if (enroll == null) return BadRequest();
-            else
-            {
-                var response = new PromoteDTO2
-                {
-                    Semester = enroll.Semester,
-                    IdStudy = enroll.IdStudy,
-                    StartDate = enroll.StartDate,
-                    IdEnrollment = enroll.IdEnrollment
-                };
-                return Ok(response);
-            }
+            this.service = service;
+        }
+        [HttpPost]
+        [Route("promote")]
+        public IActionResult Promote(PromoteDTO req)
+        {
+            return service.promote(req);
         }
         [HttpPost]
         [Route("enroll")]
-        public IActionResult EnrollStudent([FromBody]EnrollStudentDTO req, [FromServices]IDbService dbService)
+        public IActionResult EnrollStudent(EnrollStudentDTO req)
         {
-            Student studentToEnroll = new Student
-            {
-                IndexNumber = req.IndexNumber,
-                LastName = req.LastName,
-                FirstName = req.FirstName,
-                BirthDate = req.BirthDate
-            };
-            Enrollment tmp = dbService.enrollStudent(studentToEnroll, req.StudyName);
-            if (tmp == null) return BadRequest();
-            EnrollStudentDTO2 response = new EnrollStudentDTO2
-            {
-                Semester = tmp.Semester,
-                IdStudy = tmp.IdStudy,
-                StartDate = tmp.StartDate,
-                IdEnrollment = tmp.IdEnrollment
-            };
-            return Ok(response);
+            return service.enrollStudent(req);
         }
     }
 }

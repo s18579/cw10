@@ -9,8 +9,8 @@ namespace cw10.DTO
     public class PromoteDTO
     {
         [Required]
-        public int StudiesId { get; set; }
+        public string studies { get; set; }
         [Required]
-        public int Semester { get; set; }
+        public int semester { get; set; }
     }
 }
